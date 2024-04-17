@@ -1,4 +1,5 @@
 #include "binary_trees.h"
+#include <stdlib.h>
 
 levelorder_queue_t *create_node(binary_tree_t *node);
 void free_queue(levelorder_queue_t *head);
