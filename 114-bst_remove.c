@@ -1,18 +1,16 @@
 #include "binary_trees.h"
-#include <stdio.h>
 #include <stdlib.h>
 
 /**
- * bst_remove - Removes a node from a Binary Search Tree
- * @root: Pointer to the root node of the tree
- * @value: Value to remove from the tree
+ * bst_remove - Removes a node from a Binary Search Tree.
+ * @root: A pointer to the root node of the tree.
+ * @value: The value to remove from the tree.
  *
- * Return: Pointer to the new root node of the tree after removing the value
+ * Return: A pointer to the new root node of the tree after removing the
+ * desired value, or NULL if the value was not found in the tree.
  */
 bst_t *bst_remove(bst_t *root, int value)
 {
-	bst_t *temp;
-
 	if (root == NULL)
 		return NULL;
 
@@ -20,29 +18,23 @@ bst_t *bst_remove(bst_t *root, int value)
 		root->left = bst_remove(root->left, value);
 	else if (value > root->n)
 		root->right = bst_remove(root->right, value);
-	else
-	{
-		if (root->left == NULL)
-		{
-			temp = root->right;
+	else {
+		if (root->left == NULL) {
+			bst_t *right_child = root->right;
 			free(root);
-			return temp;
-		}
-		else if (root->right == NULL)
-		{
-			temp = root->left;
+			return right_child;
+		} else if (root->right == NULL) {
+			bst_t *left_child = root->left;
 			free(root);
-			return temp;
+			return left_child;
+		} else {
+			bst_t *successor = root->right;
+			while (successor->left != NULL)
+				successor = successor->left;
+			root->n = successor->n;
+			root->right = bst_remove(root->right, successor->n);
 		}
-
-		temp = root->right;
-		while (temp && temp->left != NULL)
-			temp = temp->left;
-
-		root->n = temp->n;
-		root->right = bst_remove(root->right, temp->n);
 	}
-
 	return root;
 }
 
